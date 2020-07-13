@@ -1,4 +1,4 @@
-"""  
+"""
 Copyright (c) 2019-present NAVER Corp.
 MIT License
 """
@@ -53,14 +53,14 @@ parser.add_argument('--mag_ratio', default=2, type=float, help='image magnificat
 parser.add_argument('--poly', default=False, action='store_true', help='enable polygon type')
 parser.add_argument('--show_time', default=False, action='store_true', help='show processing time')
 parser.add_argument('--test_folder', default='/data/', type=str, help='folder path to input images')
-
+parser.add_argument('--res_folder', default='./result/', type=str, help='folder path to results')
 args = parser.parse_args()
 
 
 """ For test images in a folder """
-image_list, _, _ = file_utils.get_files('/data/CRAFT-pytorch/test')
+image_list, _, _ = file_utils.get_files(args.test_folder)
 
-result_folder = '/data/CRAFT-pytorch/result/'
+result_folder = args.res_folder
 if not os.path.isdir(result_folder):
     os.mkdir(result_folder)
 
@@ -68,7 +68,10 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly):
     t0 = time.time()
 
     # resize
-    img_resized, target_ratio, size_heatmap = imgproc.resize_aspect_ratio(image, args.canvas_size, interpolation=cv2.INTER_LINEAR, mag_ratio=args.mag_ratio)
+    img_resized, target_ratio, size_heatmap = imgproc.resize_aspect_ratio(image,
+                                                                          args.canvas_size,
+                                                                          interpolation=cv2.INTER_LINEAR,
+                                                                          mag_ratio=args.mag_ratio)
     ratio_h = ratio_w = 1 / target_ratio
 
     # preprocessing
@@ -109,7 +112,6 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly):
     return boxes, polys, ret_score_text
 
 
-
 def test(modelpara):
     # load net
     net = CRAFT()     # initialize
@@ -138,8 +140,12 @@ def test(modelpara):
         # save score text
         filename, file_ext = os.path.splitext(os.path.basename(image_path))
         mask_file = result_folder + "/res_" + filename + '_mask.jpg'
-        #cv2.imwrite(mask_file, score_text)
+        cv2.imwrite(mask_file, score_text[:, :int(score_text.shape[1]/2)])
 
         file_utils.saveResult(image_path, image[:,:,::-1], polys, dirname=result_folder)
 
     print("elapsed time : {}s".format(time.time() - t))
+
+
+if __name__ == '__main__':
+    test(args.trained_model)
