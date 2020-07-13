@@ -114,7 +114,7 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly):
 
 def test(modelpara):
     # load net
-    net = CRAFT()     # initialize
+    net = CRAFT(pretrained=False)     # initialize
 
     print('Loading weights from checkpoint {}'.format(modelpara))
     if args.cuda:
