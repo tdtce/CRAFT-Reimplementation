@@ -1,7 +1,4 @@
-# CRAFT-Reimplementation
-# Note：If you have any problems, please comment. Or you can join us weChat group. The QR code will update in issues #49 .
-
-## Reimplementation：Character Region Awareness for Text Detection Reimplementation based on Pytorch
+# Reimplementation：Character Region Awareness for Text Detection Reimplementation based on Pytorch
 
 ## Character Region Awareness for Text Detection
 Youngmin Baek, Bado Lee, Dongyoon Han, Sangdoo Yun, Hwalsuk Lee
@@ -14,8 +11,27 @@ The full paper is available at: https://arxiv.org/pdf/1904.01941.pdf
 2、torchvision>=0.2.1 			                                                    																			                             
 3、opencv-python>=3.4.2                                                                                                       
 4、check requiremtns.txt                                                                                                      
-5、4 nvidia GPUs(we use 4 nvidia titanX)                                                                                      
+5、4 nvidia GPUs(we use 4 nvidia titanX)  
 
+## Run with pretrained model
+``` 
+python test.py --trained_model=[weightfile] --test_folder=[folder path to test images]
+```
+
+The result image and socre maps will be saved to `./result` by default.
+
+### Arguments
+* `--trained_model`: pretrained model
+* `--text_threshold`: text confidence threshold
+* `--low_text`: text low-bound score
+* `--link_threshold`: link confidence threshold
+* `--cuda`: use cuda for inference (default:True)
+* `--canvas_size`: max image size for inference
+* `--mag_ratio`: image magnification ratio
+* `--poly`: enable polygon type result
+* `--show_time`: show processing time
+* `--test_folder`: folder path to input images
+* `--res_folder`: folder path to results
 
 ## pre-trained model:
 `NOTE: There are old pre-trained models, I will upload the new results pre-trained models' link.`                                                                                
